@@ -21,7 +21,7 @@ jobs:
       - name: Checkout destination repository
         uses: actions/checkout@v2
         with:
-          repository: your-username/private-repo-2  # Update with the destination repo URL
+          repository: mukul-kr/my-private-repo # Update with the destination repo URL
           token: ${{ secrets.DEST_REPO_TOKEN }}
           path: dest-repo  # Specify a directory where you want to clone the destination repo
 
