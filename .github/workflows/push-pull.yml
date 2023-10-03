@@ -1,0 +1,35 @@
+name: Pull and Push Every 12 Hours
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+
+jobs:
+  pull-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v2
+        with:
+          repository: s2pl/awqs-fe  # Update with the source repo URL
+          token: ${{ secrets.SOURCE_REPO_TOKEN }}
+
+      - name: Checkout destination repository
+        uses: actions/checkout@v2
+        with:
+          repository: your-username/private-repo-2  # Update with the destination repo URL
+          token: ${{ secrets.DEST_REPO_TOKEN }}
+          path: dest-repo  # Specify a directory where you want to clone the destination repo
+
+      - name: Pull from source repository
+        run: |
+          cd dest-repo
+          git pull origin main  # Replace "main" with the branch you want to pull from
+
+      - name: Push to destination repository
+        run: |
+          cd dest-repo
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git push origin main  # Replace "main" with the branch you want to push to
