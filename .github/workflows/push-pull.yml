@@ -3,7 +3,7 @@ name: Pull and Push Every 12 Hours
 on:
   push:
     branches:
-      - main  # Run the workflow on pushes to the main branch
+      - main
   schedule:
     - cron: "0 */12 * * *"
 
@@ -15,24 +15,15 @@ jobs:
       - name: Checkout source repository
         uses: actions/checkout@v2
         with:
-          repository: s2pl/awqs-fe  # Update with the source repo URL
+          repository: s2pl/awqs-fe
           token: ${{ secrets.SOURCE_REPO_TOKEN }}
 
-      - name: Checkout destination repository
-        uses: actions/checkout@v2
-        with:
-          repository: mukul-kr/my-private-repo # Update with the destination repo URL
-          token: ${{ secrets.DEST_REPO_TOKEN }}
-          path: dest-repo  # Specify a directory where you want to clone the destination repo
-
-      - name: Pull from source repository
+      - name: Add destination repository as upstream
         run: |
-          cd dest-repo
-          git pull origin main  # Replace "main" with the branch you want to pull from
+          git remote add upstream https://github.com/mukul-kr/my-private-repo.git
 
       - name: Push to destination repository
         run: |
-          cd dest-repo
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git push origin main  # Replace "main" with the branch you want to push to
+          git push upstream main
